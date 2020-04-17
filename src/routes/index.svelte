@@ -3,11 +3,11 @@
 </script>
 
 <svelte:head>
-  <title>Pointer Poker</title>
+  <title>Pointing Poker</title>
 </svelte:head>
 
 <header>
-  <h1>Pointer Poker</h1>
+  <h1>Pointing Poker</h1>
 </header>
 <main>
   <a href={roomHref}>Create</a>
