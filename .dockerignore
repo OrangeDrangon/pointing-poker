@@ -1,0 +1,7 @@
+/__sapper__/
+/__cypress__/
+/node_modules/
+.editorconfig
+.gitignore
+Dockerfile
+README.md
