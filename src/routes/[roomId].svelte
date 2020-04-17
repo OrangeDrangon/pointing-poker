@@ -6,6 +6,7 @@
 
 <script>
   import Text from "../components/Text";
+  import Tally from "../components/Tally";
   import io from "socket.io-client";
   export let roomId;
   let name = "unknown";
@@ -13,7 +14,22 @@
   let showVotes = false;
   let disconnected = false;
   let users = {};
+  let tallies = {};
   $: usersIterable = Object.entries(users);
+  $: {
+    tallies = {};
+    for (const id in users) {
+      const { points } = users[id];
+      if (points) {
+        if (tallies[points] == null) {
+          tallies[points] = 0;
+        }
+        tallies[points]++;
+      }
+    }
+  }
+  $: talliesIterable = Object.entries(tallies);
+  $: talliesIterable.sort((a, b) => b[1] - a[1]);
 
   let socket = io("/");
   $: socket.emit("setName", { name });
@@ -23,31 +39,27 @@
     if (user.id !== socket.id) {
       socket.emit("echoInfo", { showState: showVotes, ...users[socket.id] });
     }
-    users = users;
   });
 
   socket.on("echoInfo", ({ id, showState, ...metadata }) => {
     users[id] = { ...metadata };
     showVotes = showState;
-    users = users;
   });
 
   socket.on("setName", ({ id, name }) => {
     users[id].name = name;
-    users = users;
   });
 
   socket.on("vote", ({ id, points }) => {
     users[id].points = points;
-    users = users;
   });
 
   socket.on("clearVotes", () => {
     for (const id in users) {
       delete users[id].points;
     }
-    users = users;
     showVotes = false;
+    users = users;
   });
 
   socket.on("showVotes", () => {
@@ -64,9 +76,9 @@
   });
 
   socket.on("connect", () => {
-      users = {};
-      socket.emit("join", { roomId, name });
-      disconnected = false;
+    users = {};
+    socket.emit("join", { roomId, name });
+    disconnected = false;
   });
 
   function handleVote() {
@@ -105,8 +117,8 @@
 <header>
   <h1>{roomId}</h1>
   {#if disconnected}
-  <h2>Disconnected</h2>
-  <button on:click={handleReconnect}>Reconnect</button>
+    <h2>Disconnected</h2>
+    <button on:click={handleReconnect}>Reconnect</button>
   {/if}
 </header>
 <section>
@@ -130,3 +142,11 @@
     {/each}
   </ul>
 </section>
+{#if showVotes}
+  <section>
+    <Tally name="Vote" value="Count" />
+    {#each talliesIterable as [name, value]}
+      <Tally {name} {value} />
+    {/each}
+  </section>
+{/if}
