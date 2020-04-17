@@ -2,6 +2,7 @@
   "name": "pointing-poker",
   "description": "pointing-poker",
   "version": "1.0.0",
+  "license": "GPLv3",
   "scripts": {
     "dev": "sapper dev",
     "build": "sapper build",
