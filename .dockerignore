@@ -1,6 +1,7 @@
 /__sapper__/
 /__cypress__/
 /node_modules/
+/.github/
 .editorconfig
 .gitignore
 Dockerfile
