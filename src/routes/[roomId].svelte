@@ -11,11 +11,11 @@
   let name = "unknown";
   let points = "";
   let showVotes = false;
+  let disconnected = false;
   let users = {};
   $: usersIterable = Object.entries(users);
 
   let socket = io("/");
-  socket.emit("join", { roomId, name });
   $: socket.emit("setName", { name });
 
   socket.on("joined", user => {
@@ -59,6 +59,16 @@
     users = users;
   });
 
+  socket.on("disconnect", () => {
+    disconnected = true;
+  });
+
+  socket.on("connect", () => {
+      users = {};
+      socket.emit("join", { roomId, name });
+      disconnected = false;
+  });
+
   function handleVote() {
     socket.emit("vote", { points });
   }
@@ -69,6 +79,10 @@
 
   function handleShowVotes() {
     socket.emit("showVotes");
+  }
+
+  function handleReconnect() {
+    socket.open();
   }
 </script>
 
@@ -90,6 +104,10 @@
 
 <header>
   <h1>{roomId}</h1>
+  {#if disconnected}
+  <h2>Disconnected</h2>
+  <button on:click={handleReconnect}>Reconnect</button>
+  {/if}
 </header>
 <section>
   <Text name="Name" bind:value={name} />
