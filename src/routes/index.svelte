@@ -10,5 +10,5 @@
   <h1>Pointing Poker</h1>
 </header>
 <main>
-  <a href={roomHref}>Create</a>
+  <a href={roomHref} rel="prefetch">Create</a>
 </main>
