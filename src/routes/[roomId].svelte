@@ -8,8 +8,7 @@
   import Text from "../components/Text";
   import VotesTable from "../components/VotesTable";
   import UsersTable from "../components/UsersTable";
-
-  import io from "socket.io-client";
+  import { initializeSocket } from "./_initializeSocket";
 
   export let roomId;
 
@@ -35,7 +34,7 @@
   $: talliesIterable = Object.entries(tallies);
   $: talliesIterable.sort((a, b) => b[1] - a[1]);
 
-  let socket = io("/");
+  let socket = initializeSocket();
   $: socket.emit("setName", { name });
 
   socket.on("joined", user => {
@@ -135,11 +134,11 @@
     </button>
   </form>
 </section>
-<section>
+<section class="users">
   <UsersTable users={usersIterable} {showVotes} />
 </section>
 {#if showVotes}
-  <section>
+  <section class="votes">
     <VotesTable votes={talliesIterable} />
   </section>
 {/if}
