@@ -4,6 +4,6 @@
 </script>
 
 <Tally name="Vote" value="Count" />
-{#each votes as [name, value]}
+{#each votes as [name, value] (name)}
   <Tally {name} {value} />
 {/each}

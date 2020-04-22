@@ -6,14 +6,15 @@
 
 <script>
   import Text from "../components/Text";
-  import VoteTable from "../components/VoteTable";
+  import VotesTable from "../components/VotesTable";
+  import UsersTable from "../components/UsersTable";
 
   import io from "socket.io-client";
 
   export let roomId;
 
   let name = "unknown";
-  let points = "";
+  let vote = "";
   let showVotes = false;
   let disconnected = false;
   let users = {};
@@ -22,12 +23,12 @@
   $: {
     tallies = {};
     for (const id in users) {
-      const { points } = users[id];
-      if (points) {
-        if (tallies[points] == null) {
-          tallies[points] = 0;
+      const { vote } = users[id];
+      if (vote) {
+        if (tallies[vote] == null) {
+          tallies[vote] = 0;
         }
-        tallies[points]++;
+        tallies[vote]++;
       }
     }
   }
@@ -53,13 +54,13 @@
     users[id].name = name;
   });
 
-  socket.on("vote", ({ id, points }) => {
-    users[id].points = points;
+  socket.on("vote", ({ id, vote }) => {
+    users[id].vote = vote;
   });
 
   socket.on("clearVotes", () => {
     for (const id in users) {
-      delete users[id].points;
+      delete users[id].vote;
     }
     showVotes = false;
     users = users;
@@ -85,7 +86,9 @@
   });
 
   function handleVote() {
-    socket.emit("vote", { points });
+    if (vote) {
+      socket.emit("vote", { vote });
+    }
   }
 
   function handleClearAllVotes() {
@@ -106,10 +109,7 @@
     display: flex;
     flex-flow: column;
     width: 300px;
-  }
-
-  .green {
-    color: green;
+    margin: 10px;
   }
 </style>
 
@@ -127,7 +127,7 @@
 <section>
   <Text name="Name" bind:value={name} />
   <form on:submit|preventDefault={handleVote}>
-    <Text name="Points" bind:value={points} />
+    <Text name="Vote" bind:value={vote} />
     <button type="submit">Vote</button>
     <button on:click|preventDefault={handleShowVotes}>Show Votes</button>
     <button on:click|preventDefault={handleClearAllVotes}>
@@ -136,17 +136,10 @@
   </form>
 </section>
 <section>
-  <ul>
-    {#each usersIterable as [id, user]}
-      <li class={user.points ? 'green' : ''}>
-        {user.name}
-        {#if showVotes && user.points != null}- {user.points}{/if}
-      </li>
-    {/each}
-  </ul>
+  <UsersTable users={usersIterable} {showVotes} />
 </section>
 {#if showVotes}
   <section>
-    <VoteTable votes={talliesIterable} />
+    <VotesTable votes={talliesIterable} />
   </section>
 {/if}

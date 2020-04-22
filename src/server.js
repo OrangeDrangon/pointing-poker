@@ -38,8 +38,8 @@ io(server).on("connection", (socket) => {
     socket.nsp.to(room).emit("echoInfo", { id, ...metadata });
   });
 
-  socket.on("vote", ({ points }) => {
-    socket.nsp.to(room).emit("vote", { id, points });
+  socket.on("vote", ({ vote }) => {
+    socket.nsp.to(room).emit("vote", { id, vote });
   });
 
   socket.on("clearVotes", () => {
