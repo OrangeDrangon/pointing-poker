@@ -6,9 +6,12 @@
 
 <script>
   import Text from "../components/Text";
-  import Tally from "../components/Tally";
+  import VoteTable from "../components/VoteTable";
+
   import io from "socket.io-client";
+
   export let roomId;
+
   let name = "unknown";
   let points = "";
   let showVotes = false;
@@ -144,9 +147,6 @@
 </section>
 {#if showVotes}
   <section>
-    <Tally name="Vote" value="Count" />
-    {#each talliesIterable as [name, value]}
-      <Tally {name} {value} />
-    {/each}
+    <VoteTable votes={talliesIterable} />
   </section>
 {/if}
