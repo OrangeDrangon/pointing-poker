@@ -9,7 +9,6 @@
   socket.on("connect", () => {
     $disconnected = false;
     users.reset();
-    messages.reset();
     socket.emit("join", { roomId, name });
   });
 
