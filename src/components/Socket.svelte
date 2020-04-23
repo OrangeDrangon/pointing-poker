@@ -21,7 +21,7 @@
 
   socket.on("echoInfo", ({ showState, ...user }) => {
     users.addUser(user);
-    showVotes.set(showState);
+    $showVotes = showState;
   });
 
   socket.on("setName", ({ id, name }) => {
@@ -33,11 +33,12 @@
   });
 
   socket.on("clearVotes", () => {
+    $showVotes = false;
     users.clearVotes();
   });
 
   socket.on("showVotes", () => {
-    showVotes.set(true);
+    $showVotes = true;
   });
 
   socket.on("remove", ({ id }) => {
