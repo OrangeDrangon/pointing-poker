@@ -1,6 +1,6 @@
 <script>
   import io from "socket.io-client";
-  import { users, disconnected, showVotes, messages } from "../routes/_stores";
+  import { users, disconnected, showVotes } from "../routes/_stores";
 
   export let roomId;
 

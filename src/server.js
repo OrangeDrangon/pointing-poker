@@ -48,7 +48,7 @@ io(server).on("connection", (socket) => {
 
   socket.on("showVotes", () => {
     socket.nsp.to(room).emit("showVotes");
-  })
+  });
 
   socket.on("disconnect", () => {
     socket.to(room).emit("remove", { id });

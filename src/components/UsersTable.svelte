@@ -5,6 +5,6 @@
   export let showVotes;
 </script>
 
-  {#each users as [id, { name, vote: vote }] (id)}
-    <User {name} {vote} showVote={showVotes} />
-  {/each}
+{#each users as [id, { name, vote: vote }] (id)}
+  <User {name} {vote} showVote={showVotes} />
+{/each}

@@ -2,20 +2,24 @@
   import Text from "../components/Text";
   import VotesTable from "../components/VotesTable";
   import UsersTable from "../components/UsersTable";
-  import { users, disconnected, showVotes, tallies } from "../routes/_stores";
+  import {
+    users,
+    disconnected,
+    showVotes,
+    tallies,
+    name,
+    vote
+  } from "../routes/_stores";
 
   export let socket;
   export let roomId;
 
-  let name = "unknown";
-  let vote = "";
-
   $: usersIterable = Object.entries($users);
-  $: socket.emit("setName", { name });
+  $: socket.emit("setName", { name: $name });
 
   function handleVote() {
     if (vote) {
-      socket.emit("vote", { vote });
+      socket.emit("vote", { vote: $vote });
     }
   }
 
@@ -53,9 +57,9 @@
   {/if}
 </header>
 <section>
-  <Text name="Name" bind:value={name} />
+  <Text name="Name" bind:value={$name} />
   <form on:submit|preventDefault={handleVote}>
-    <Text name="Vote" bind:value={vote} />
+    <Text name="Vote" bind:value={$vote} />
     <button type="submit">Vote</button>
     <button on:click|preventDefault={handleShowVotes}>Show Votes</button>
     <button on:click|preventDefault={handleClearAllVotes}>

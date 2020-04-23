@@ -13,7 +13,6 @@
   .user div {
     padding: 10px;
   }
-
 </style>
 
 <div class="user">

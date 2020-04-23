@@ -56,3 +56,5 @@ export const users = createUsersStore();
 export const tallies = derived(users, deriveTallies);
 export const showVotes = writable(false);
 export const disconnected = writable(false);
+export const name = writable("unknown");
+export const vote = writable("");
