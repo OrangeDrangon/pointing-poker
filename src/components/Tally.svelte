@@ -3,6 +3,11 @@
   export let value;
 </script>
 
+<div class="tally">
+  <div class="col name">{name}</div>
+  <div class="col">{value}</div>
+</div>
+
 <style>
   .tally {
     display: flex;
@@ -31,8 +36,3 @@
     border-left: none;
   }
 </style>
-
-<div class="tally">
-  <div class="col name">{name}</div>
-  <div class="col">{value}</div>
-</div>

@@ -8,7 +8,7 @@
     showVotes,
     tallies,
     name,
-    vote
+    vote,
   } from "../routes/_stores";
 
   export let socket;
@@ -35,15 +35,6 @@
     socket.open();
   }
 </script>
-
-<style>
-  section {
-    display: flex;
-    flex-flow: column;
-    width: 300px;
-    margin: 10px;
-  }
-</style>
 
 <svelte:head>
   <title>{roomId}</title>
@@ -75,3 +66,12 @@
     <VotesTable votes={$tallies} />
   </section>
 {/if}
+
+<style>
+  section {
+    display: flex;
+    flex-flow: column;
+    width: 300px;
+    margin: 10px;
+  }
+</style>

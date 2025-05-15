@@ -4,6 +4,16 @@
   export let showVote;
 </script>
 
+<div class="user">
+  <div class="voted">
+    {#if vote}✅{:else}❌{/if}
+  </div>
+  <div class="name">{name}</div>
+  {#if vote && showVote}
+    <div class="vote">{vote}</div>
+  {/if}
+</div>
+
 <style>
   .user {
     display: flex;
@@ -14,13 +24,3 @@
     padding: 10px;
   }
 </style>
-
-<div class="user">
-  <div class="voted">
-    {#if vote}✅{:else}❌{/if}
-  </div>
-  <div class="name">{name}</div>
-  {#if vote && showVote}
-    <div class="vote">{vote}</div>
-  {/if}
-</div>

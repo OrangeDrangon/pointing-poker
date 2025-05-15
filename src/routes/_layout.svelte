@@ -1,6 +1,9 @@
 <script>
-
 </script>
+
+<main>
+  <slot />
+</main>
 
 <style>
   main {
@@ -12,7 +15,3 @@
     box-sizing: border-box;
   }
 </style>
-
-<main>
-  <slot />
-</main>

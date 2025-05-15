@@ -1,18 +1,18 @@
 <script>
-  import io from "socket.io-client";
+  import { io } from "socket.io-client";
   import { users, disconnected, showVotes } from "../routes/_stores";
 
   export let roomId;
 
-  let socket = io("/");
+  let socket = io();
 
   socket.on("connect", () => {
     $disconnected = false;
     users.reset();
-    socket.emit("join", { roomId, name });
+    socket.emit("join", { roomId, name: "unknown" });
   });
 
-  socket.on("joined", user => {
+  socket.on("joined", (user) => {
     users.addUser(user);
     if (user.id !== socket.id) {
       socket.emit("echoInfo", { showState: $showVotes, ...$users[socket.id] });
