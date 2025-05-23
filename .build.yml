@@ -1,0 +1,23 @@
+image: alpine/edge
+packages:
+  - podman
+secrets:
+  - f2e4a894-42a3-4657-a693-ad1acb355059
+sources:
+  - https://git.sr.ht/~drangon/pointing-poker
+environment:
+  REGISTRY: quay.io
+  REPOSITORY: drangon/pointing-poker
+tasks:
+  - setup-qemu: |
+      sudo podman run --privileged --rm docker.io/tonistiigi/binfmt --install all"
+  - calculate-image-name: |
+      TAG="${GIT_REF##*/}"
+      IMAGE_NAME="${REGISTRY}/${REPOSITORY}:${TAG}"
+      echo ${IMAGE_NAME} >> ~/.buildenv
+  - create-manifest: |
+      podman manifest create "${IMAGE_NAME}"
+  - build-images: |
+      podman build --platform linux/amd63,linux/arm64 --manifest ${IMAGE_NAME} .
+  - push-images: |
+      podman manifest push "${IMAGE_NAME}"
